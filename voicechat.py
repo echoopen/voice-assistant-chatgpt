@@ -108,7 +108,7 @@ def app():
             spokenResponse = spokenResponse.lstrip().rstrip()
             #Speak the input text
             generate_voice(spokenResponse, ttsVoices[languageCode])
-        st.experimental_rerun()
+        
 
 if __name__ == "__main__":
     app()
