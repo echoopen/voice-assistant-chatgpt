@@ -68,47 +68,49 @@ def init_load_setups():
 
 # main voice chat app 
 def app():
-    # Put expensive initialize computation here
-    st.title("ChatGPT Voice Assistant")
-    st.subheader("It understands 97 Spoken Languages!")
+    choicee = st.radio('选择', ['1', '2'])
+    if choice == '2':
+        # Put expensive initialize computation here
+        st.title("ChatGPT Voice Assistant")
+        st.subheader("It understands 97 Spoken Languages!")
 
-    # get initial setup
-    asr, chatgpt, ttsVoices = init_load_setups()
+        # get initial setup
+        asr, chatgpt, ttsVoices = init_load_setups()
 
-    # recorder 
-    audio = audiorecorder("Push to Talk", "Recording... (push again to stop)")
+        # recorder 
+        audio = audiorecorder("Push to Talk", "Recording... (push again to stop)")
 
-    if len(audio) > 0:
-        # To play audio in frontend:
-        st.audio(audio.tobytes())
-        # To save audio to a file:
-        audioname='recording.tmp'
-        with open( audioname, "wb") as f:
-            f.write(audio.tobytes())
-        ## get record file formate based on file magics
-        recordFormat = get_audio_record_format(audioname)
-        os.rename(audioname, audioname + recordFormat )
+        if len(audio) > 0:
+            # To play audio in frontend:
+            st.audio(audio.tobytes())
+            # To save audio to a file:
+            audioname='recording.tmp'
+            with open( audioname, "wb") as f:
+                f.write(audio.tobytes())
+            ## get record file formate based on file magics
+            recordFormat = get_audio_record_format(audioname)
+            os.rename(audioname, audioname + recordFormat )
 
-        st.markdown("<b>Chat History</b> ", unsafe_allow_html=True)
+            st.markdown("<b>Chat History</b> ", unsafe_allow_html=True)
 
-        with st.spinner("Recognizing your voice command ..."):
-            asr_result = asr.transcribe( audioname + recordFormat )
-            text = asr_result["text"]
-            languageCode = asr_result["language"]
-            st.markdown("<b>You:</b> " + text, unsafe_allow_html=True)
-            print('ASR result is:' + text)
+            with st.spinner("Recognizing your voice command ..."):
+                asr_result = asr.transcribe( audioname + recordFormat )
+                text = asr_result["text"]
+                languageCode = asr_result["language"]
+                st.markdown("<b>You:</b> " + text, unsafe_allow_html=True)
+                print('ASR result is:' + text)
 
-        st.write('')
+            st.write('')
 
-        with st.spinner("Getting ChatGPT answer for your command ..."):
-            response = chatgpt.generate_response(text)
-            st.markdown("<b>chatGPT:</b> " + response, unsafe_allow_html=True)
-            print('chatGPT response is: '   + response)
-            spokenResponse = re.sub(r'\s+', ' ', response)
-            spokenResponse = spokenResponse.lstrip().rstrip()
-            #Speak the input text
-            generate_voice(spokenResponse, ttsVoices[languageCode])
-        
+            with st.spinner("Getting ChatGPT answer for your command ..."):
+                response = chatgpt.generate_response(text)
+                st.markdown("<b>chatGPT:</b> " + response, unsafe_allow_html=True)
+                print('chatGPT response is: '   + response)
+                spokenResponse = re.sub(r'\s+', ' ', response)
+                spokenResponse = spokenResponse.lstrip().rstrip()
+                #Speak the input text
+                generate_voice(spokenResponse, ttsVoices[languageCode])
+
 
 if __name__ == "__main__":
     app()
