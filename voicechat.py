@@ -68,7 +68,7 @@ def init_load_setups():
 
 # main voice chat app 
 def app():
-    choicee = st.radio('选择', ['1', '2'])
+    choice = st.radio('选择', ['1', '2'])
     if choice == '2':
         # Put expensive initialize computation here
         st.title("ChatGPT Voice Assistant")
