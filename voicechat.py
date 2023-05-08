@@ -36,17 +36,18 @@ class Conversation:
     def __init__(self, engine):
         self.engine = engine
     def generate_response(self, message):
-        response = openai.Completion.create(
-            engine=self.engine,
-            prompt=message,
-            max_tokens=1024,
-            n=1,
-            stop=None,
-            temperature=0.2,
-            presence_penalty=0.6,
-            frequency_penalty=0.6
-        )
-        return response.choices[0].text
+#         response = openai.Completion.create(
+#             engine=self.engine,
+#             prompt=message,
+#             max_tokens=1024,
+#             n=1,
+#             stop=None,
+#             temperature=0.2,
+#             presence_penalty=0.6,
+#             frequency_penalty=0.6
+#         )
+#         return response.choices[0].text
+        return "输出文档"
 
 
 @st.cache  # Decorator to cache heavy setups
